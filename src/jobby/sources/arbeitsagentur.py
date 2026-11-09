@@ -1,3 +1,5 @@
+import dataclasses
+
 import requests
 import json
 from src.jobby.models import Job
@@ -31,7 +33,7 @@ def search(position, location, umkreis=30, size=25, page=1):
             jobs.append(_map_to_job(item))
         return jobs
     else:
-        print("Currently no jobs")
+        print("There ain't no jobs!")
         return []
 
 def _map_to_job(item: dict) -> Job:
@@ -60,18 +62,29 @@ def _map_to_job(item: dict) -> Job:
     return job_stelle
 
 def fetch_details(job_stelle):
-    ref = job.id
-    enc_ref = base64.b64encode(ref)
+    ref = job_stelle.ref_nr
+    ref_byt = ref.encode('utf-8')
+    enc_ref = base64.b64encode(ref_byt)
+    ref_b64 = enc_ref.decode('utf-8')
 
     response = requests.get(
-        f"{BASE_URL}/pc/v4/jobdetails/{enc_ref}",
+        f"{BASE_URL}/pc/v4/jobdetails/{ref_b64}",
         headers=HEADERS,
+        timeout=30
     )
 
+    response.raise_for_status()
+    data = response.json()
+
+    job_descr = data.get("stellenangebotsBeschreibung")
+    updated_job = dataclasses.replace(job_stelle, beschreibung = job_descr)
+
+    return updated_job
 
 if __name__ == "__main__":
     stellen = []
-    jobs = search("werkstudent", "Stuttgart", umkreis=20)
+    jobs = search("werkstudent", "Simbabwe", umkreis=20)
     for job in jobs:
-        stellen.append(job)
+        updated_job = fetch_details(job)
+        stellen.append(updated_job)
     print(stellen)
