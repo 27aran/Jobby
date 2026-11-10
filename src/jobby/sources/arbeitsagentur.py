@@ -2,7 +2,7 @@ import dataclasses
 
 import requests
 import json
-from src.jobby.models import Job
+from jobby.models import Job
 import base64
 import datetime
 
@@ -41,7 +41,7 @@ def _map_to_job(item: dict) -> Job:
     titel = item["stellenangebotsTitel"]
     unternehmen = item["firma"]
     ort = item["stellenlokationen"][0]["adresse"]["ort"]
-    plz = item["stellenlokationen"][0].get("plz")
+    plz = item["stellenlokationen"][0]["adresse"].get("plz")
 
     datum = item["datumErsteVeroeffentlichung"]
     datum_date = datetime.datetime.strptime(datum, "%Y-%m-%d").date()

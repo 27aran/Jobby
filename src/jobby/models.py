@@ -2,8 +2,6 @@ from dataclasses import dataclass
 from datetime import date
 from typing import Optional
 
-
-
 @dataclass
 class Job:
     ref_nr : str
