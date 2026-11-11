@@ -8,27 +8,41 @@ from dotenv import load_dotenv
 ROOT = Path(__file__).resolve().parents[2]
 load_dotenv(ROOT / ".env")
 
+ALLOWED_PROVIDERS = {"gemini", "anthropic", "ollama"}
+
 
 @dataclass(frozen=True)
 class Settings:
-    anthropic_api_key: str
-    claude_model: str
+    # LLM
+    llm_provider: str
+    llm_model: str | None
+    gemini_api_key: str | None
+    anthropic_api_key: str | None
+
+    # Embeddings
     embedding_model: str
+
+    # Pfade
     db_path: Path
     qdrant_path: Path
     profile_dir: Path
 
 
-def _require(name: str) -> str:
-    value = os.getenv(name)
-    if not value:
-        raise RuntimeError(f"{name} fehlt in .env")
-    return value
+def _load_provider() -> str:
+    provider = os.getenv("LLM_PROVIDER", "gemini").strip().lower()
+    if provider not in ALLOWED_PROVIDERS:
+        raise RuntimeError(
+            f"Unbekannter LLM_PROVIDER '{provider}'. "
+            f"Erlaubt: {', '.join(sorted(ALLOWED_PROVIDERS))}"
+        )
+    return provider
 
 
 settings = Settings(
-    anthropic_api_key=_require("ANTHROPIC_API_KEY"),
-    claude_model=os.getenv("CLAUDE_MODEL", "claude-sonnet-5-5"),
+    llm_provider=_load_provider(),
+    llm_model=os.getenv("LLM_MODEL") or None,
+    gemini_api_key=os.getenv("GEMINI_API_KEY") or None,
+    anthropic_api_key=os.getenv("ANTHROPIC_API_KEY") or None,
     embedding_model=os.getenv("EMBEDDING_MODEL", "BAAI/bge-m3"),
     db_path=ROOT / os.getenv("DB_PATH", "data/jobby.db"),
     qdrant_path=ROOT / os.getenv("QDRANT_PATH", "data/qdrant"),
