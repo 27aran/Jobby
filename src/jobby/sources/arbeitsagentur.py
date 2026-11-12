@@ -9,12 +9,13 @@ import datetime
 BASE_URL = "https://rest.arbeitsagentur.de/jobboerse/jobsuche-service"
 HEADERS = {"X-API-Key": "jobboerse-jobsuche"}
 
-def search(position, location, umkreis=30, size=25, page=1):
+def search(position, location, published_since = 7, umkreis=30, size=25, page=1):
     params = {
         "was" : position,
         "wo" : location,
         "umkreis" : umkreis,
         "size" : size,
+        "veroeffentlichtseit" : published_since,
         "page" : page
     }
     response = requests.get(
