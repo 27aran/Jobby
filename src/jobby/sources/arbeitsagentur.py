@@ -1,7 +1,6 @@
 import dataclasses
 
 import requests
-import json
 from jobby.models import Job
 import base64
 import datetime
