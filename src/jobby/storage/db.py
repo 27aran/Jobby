@@ -43,7 +43,7 @@ def job_exists(ref_nr) -> bool:
 
 if __name__ == "__main__":
     init_db()
-    jobs = search("Python", "Stuttgart", size=5)
+    jobs = search("Python", "Stuttgart", published_since= 0, size=5)
     for job in jobs:
         save_job(job)
     print(job_exists(jobs[0].ref_nr))  # True
