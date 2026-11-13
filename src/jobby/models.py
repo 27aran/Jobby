@@ -13,3 +13,9 @@ class Job:
     beschreibung: Optional = None
     url: Optional = None
     home_office: Optional = None
+
+@dataclass
+class Document:
+    text: str
+    source: str               # Dateiname, z. B. "lebenslauf.pdf"
+    page: int | None = None   # Seitenzahl bei PDFs, sonst None
