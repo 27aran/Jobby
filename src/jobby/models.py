@@ -19,3 +19,10 @@ class Document:
     text: str
     source: str               # Dateiname, z. B. "lebenslauf.pdf"
     page: int | None = None   # Seitenzahl bei PDFs, sonst None
+
+@dataclass
+class Chunk:
+    text: str
+    source: str
+    id: str
+    page: int | None = None
