@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 ROOT = Path(__file__).resolve().parents[2]
 load_dotenv(ROOT / ".env")
 
-ALLOWED_PROVIDERS = {"gemini", "anthropic", "ollama"}
+ALLOWED_PROVIDERS = {"gemini", "anthropic", "ollama", "openrouter"}
 
 
 @dataclass(frozen=True)
@@ -17,7 +17,9 @@ class Settings:
     llm_provider: str
     llm_model: str | None
     gemini_api_key: str | None
+    openrouter_api_key: str | None
     anthropic_api_key: str | None
+    ollama_api_key: str | None
 
     # Embeddings
     embedding_model: str
@@ -29,7 +31,7 @@ class Settings:
 
 
 def _load_provider() -> str:
-    provider = os.getenv("LLM_PROVIDER", "gemini").strip().lower()
+    provider = os.getenv("LLM_PROVIDER", "openrouter").strip().lower()
     if provider not in ALLOWED_PROVIDERS:
         raise RuntimeError(
             f"Unbekannter LLM_PROVIDER '{provider}'. "
@@ -42,7 +44,9 @@ settings = Settings(
     llm_provider=_load_provider(),
     llm_model=os.getenv("LLM_MODEL") or None,
     gemini_api_key=os.getenv("GEMINI_API_KEY") or None,
+    openrouter_api_key=os.getenv("OPENROUTER_API_KEY") or None,
     anthropic_api_key=os.getenv("ANTHROPIC_API_KEY") or None,
+    ollama_api_key=os.getenv("OLLAMA_API_KEY") or None,
     embedding_model=os.getenv("EMBEDDING_MODEL", "BAAI/bge-m3"),
     db_path=ROOT / os.getenv("DB_PATH", "data/jobby.db"),
     qdrant_path=ROOT / os.getenv("QDRANT_PATH", "data/qdrant"),
