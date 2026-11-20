@@ -26,3 +26,11 @@ class Chunk:
     source: str
     id: str
     page: int | None = None
+
+@dataclass
+class ProfileMatch:
+    id: str
+    score: float
+    text: str
+    source: str
+    page: int | None = None
