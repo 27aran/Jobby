@@ -43,7 +43,6 @@ def index_chunks(chunks: list[Chunk]):
         points=points,
     )
 
-
 if __name__ == "__main__":
     chunks = []
     for doc in load_documents():

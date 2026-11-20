@@ -29,5 +29,5 @@ def search_profile(query: str, limit: int = 3):
 
 
 if __name__ == "__main__":
-    print(search_profile("PyTorch/Unsicherheit"))
-    print(search_profile("SAP/Buchhaltung"))
+    for m in search_profile("Conformal Prediction und Bayessche Neuronale Netze", limit=20):
+        print(round(m.score, 3), m.text.split("\n")[1][:50])
