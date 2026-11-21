@@ -20,6 +20,7 @@ class Settings:
     openrouter_api_key: str | None
     anthropic_api_key: str | None
     ollama_api_key: str | None
+    llm_timeout: int | None
 
     # Embeddings
     embedding_model: str
@@ -47,6 +48,7 @@ settings = Settings(
     openrouter_api_key=os.getenv("OPENROUTER_API_KEY") or None,
     anthropic_api_key=os.getenv("ANTHROPIC_API_KEY") or None,
     ollama_api_key=os.getenv("OLLAMA_API_KEY") or None,
+    llm_timeout= 45,
     embedding_model=os.getenv("EMBEDDING_MODEL", "BAAI/bge-m3"),
     db_path=ROOT / os.getenv("DB_PATH", "data/jobby.db"),
     qdrant_path=ROOT / os.getenv("QDRANT_PATH", "data/qdrant"),
