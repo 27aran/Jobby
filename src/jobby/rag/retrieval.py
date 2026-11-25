@@ -13,6 +13,7 @@ def search_profile(query: str, limit: int = 3):
             limit = limit,
             with_payload=True,
         )
+
         profile_matches = []
         for item in response.points:
             match = ProfileMatch(
